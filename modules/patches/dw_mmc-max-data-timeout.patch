@@ -1,0 +1,16 @@
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -1349,11 +1349,8 @@
+ 	/* TMOUT[7:0] (RESPONSE_TIMEOUT) */
+ 	tmout = 0xFF; /* Set maximum */
+ 
+-	/* TMOUT[31:8] (DATA_TIMEOUT) */
+-	if (!tmp || tmp > 0xFFFFFF)
+-		tmout |= (0xFFFFFF << 8);
+-	else
+-		tmout |= (tmp & 0xFFFFFF) << 8;
++	/* TMOUT[31:8] (DATA_TIMEOUT): hardware maximum, as before 5.19 */
++	tmout |= (0xFFFFFF << 8);
+ 
+ 	mci_writel(host, TMOUT, tmout);
+ 	dev_dbg(host->dev, "timeout_ns: %u => TMOUT[31:8]: %#08x",
